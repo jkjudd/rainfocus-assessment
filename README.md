@@ -13,3 +13,5 @@ npm run dev
 - Any API failure shows a toast. The list only changes once the server confirms the request.
 
 `npm test` runs the unit tests and `npm run lint` runs ESLint.
+
+It needs Node 20.19+ or 22.12+. To run it on CodeSandbox, import the repo as a Devbox (not a browser sandbox): `.codesandbox/tasks.json` installs dependencies and starts the dev server with its preview on port 5173.
