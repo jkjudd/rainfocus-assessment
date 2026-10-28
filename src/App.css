@@ -1,0 +1,593 @@
+/* Layout */
+
+.app-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 40px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+/* Focused by script (after a delete, or a details retry), never by Tab. */
+.app-header h1:focus,
+.event-details:focus {
+  outline: none;
+}
+
+.subtitle {
+  margin-top: 8px;
+}
+
+.list-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 0;
+  text-align: center;
+}
+
+/* Buttons */
+
+.button {
+  font: inherit;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.button:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--accent-border);
+}
+
+.button:is(:disabled, [aria-disabled="true"]) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.button-primary:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--text-h);
+}
+
+.button-danger {
+  color: var(--danger);
+  border-color: var(--danger-bg);
+  background: var(--danger-bg);
+}
+
+.button-danger:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--danger);
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+:is(.button, .icon-button, .toast-close):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Event list */
+
+.event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.event-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.event-card:has(.event-open:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.event-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Stretch the name button over the whole card so any click on it opens the
+   read-only details; the Delete and Edit buttons sit above this layer. */
+.event-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.event-open:focus-visible {
+  outline: none;
+}
+
+.event-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.event-name {
+  margin: 0;
+  font-size: 18px;
+  line-height: 145%;
+  letter-spacing: normal;
+  font-weight: 600;
+  color: var(--text-h);
+  overflow-wrap: anywhere;
+}
+
+.event-company {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.event-description {
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.badge {
+  padding: 1px 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+/* On phones, Delete moves below the text so long descriptions keep a usable
+   line length instead of a narrow column beside the button. */
+@media (max-width: 420px) {
+  .event-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 10px;
+  }
+
+  .event-actions {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* Delete above Edit; above the stretched card button so both stay clickable. */
+.event-actions {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-actions .button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.swatch {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  border-radius: 50%;
+  border: 1px solid var(--input-border);
+  background:
+    repeating-linear-gradient(45deg, var(--border) 0 3px, transparent 3px 6px);
+  /* The swatch shows data (the event's color), so keep it in forced-colors mode. */
+  forced-color-adjust: none;
+}
+
+/* Modal */
+
+.modal {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  padding: 24px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.modal::backdrop {
+  background: rgba(8, 6, 13, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-status {
+  padding: 16px 0;
+}
+
+.modal-text {
+  margin-bottom: 8px;
+}
+
+/* Read-only event details */
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+}
+
+.event-details dt {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.event-details dd {
+  margin: 2px 0 0;
+  color: var(--text-h);
+  overflow-wrap: anywhere;
+}
+
+.event-details-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-details-color .swatch {
+  margin-top: 0;
+}
+
+.event-details a {
+  color: var(--accent);
+}
+
+.event-details-empty {
+  color: var(--text);
+  font-style: italic;
+}
+
+.event-details-image {
+  display: block;
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 240px;
+  max-width: 100%;
+  aspect-ratio: 4 / 3;
+  box-sizing: border-box;
+  border: 1px dashed var(--input-border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+}
+
+/* Form */
+
+.form-hint {
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.event-form fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Read-only (not disabled) while saving so focus stays put; dim to match. */
+.event-form fieldset[aria-busy='true'] :is(input, textarea) {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.field label {
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.field input,
+.field textarea {
+  font: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input::placeholder {
+  color: var(--text);
+  opacity: 1;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+.field [aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.field-error {
+  font-size: 14px;
+  color: var(--danger);
+}
+
+.field-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.char-count {
+  margin-left: auto;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.color-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Two short fields side by side, stacked on narrow screens. */
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.image-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.image-preview {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+}
+
+.event-form .field-radios {
+  gap: 6px;
+}
+
+.field-radios legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.field .radio-option input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.color-input .swatch {
+  width: 28px;
+  height: 28px;
+  margin-top: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+/* Toasts */
+
+/* Fixed to the viewport even when portaled into an open modal. */
+.toast-region {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(380px, calc(100vw - 32px));
+  text-align: left;
+}
+
+.toast-region:empty {
+  display: none;
+}
+
+/* On the page, a stack of toasts can't take over a small or zoomed viewport. */
+body > .toast-layer .toast-region {
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+/* Inside a modal, a fixed toast can cover the form's focused buttons at many
+   viewport sizes, and errors now stay until dismissed. So there the region sits
+   in normal flow below the form, where it can't overlap anything;
+   ToastProvider scrolls it into view. */
+.modal-toasts .toast-region {
+  position: static;
+  width: auto;
+  margin-top: 16px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--success);
+  background: var(--surface);
+  color: var(--text-h);
+  box-shadow: var(--shadow);
+}
+
+.toast-error {
+  border-left-color: var(--danger);
+}
+
+.toast span {
+  flex: 1;
+}
+
+.toast-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 32px;
+  min-height: 32px;
+  margin: -6px -6px -6px 0;
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}

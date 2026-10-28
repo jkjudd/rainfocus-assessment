@@ -1,0 +1,22 @@
+Change this app's purpose to a single page app that can allow a user to create new events, update existing events, and delete existing events. 
+
+Think harder on fulfilling the following acceptance criteria.
+A home page that shows a list of events. Display the name description and company of each event. The list should be sorted by company name in alphabetical order.
+A button that adds a new event. The button displays a form in a modal. The form allows the user to define a new event. When the new event is submitted, the list of events is updated. The form captures the event name, the event description, the company name, and a web safe named color for the event.
+A button on each event listing that allows the user to delete the event.
+Include error handling methodologies to account for API failures. Display a toast on any API failure and do not add an event to the list if the API has failed.
+Allow the user to click on an event in the list. The selected event should display a modal that allows the user to update the event's name, description, company name, and associated web safe color name.
+Validate all inputs in forms and modals. Ensure that the submit button is not enabled until all inputs contain valid entries.
+For display, update, and deletion of event data, use the following API endpoints.
+GET https://rf-json-server.herokuapp.com/events/
+Gets a list of all events
+GET https://rf-json-server.herokuapp.com/events/{id} 
+Gets a single event for the details modal by ID
+POST https://rf-json-server.herokuapp.com/events/
+Creates a new event
+PUT https://rf-json-server.herokuapp.com/events/{id} 
+Updates an existing event by ID
+DELETE https://rf-json-server.herokuapp.com/events/{id} 
+Deletes an existing event by ID
+Use the following general payload/object structure for events. Include the ID for operations that require the event's ID.
+{ "color": string, "name": string, "description": string, "company": string }

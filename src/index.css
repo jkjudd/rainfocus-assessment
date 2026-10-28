@@ -1,0 +1,91 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --surface: #fff;
+  --border: #e5e4e7;
+  --input-border: #8b8594;
+  --accent: #9329e6;
+  --accent-text: #fff;
+  --accent-bg: rgba(147, 41, 230, 0.1);
+  --accent-border: rgba(147, 41, 230, 0.5);
+  --danger: #c0262d;
+  --danger-bg: rgba(192, 38, 45, 0.08);
+  --success: #1d7a46;
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  font: 16px/145% var(--sans);
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --surface: #1f2028;
+    --border: #2e303a;
+    --input-border: #767c88;
+    --accent: #c084fc;
+    --accent-text: #16171d;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --danger: #f87171;
+    --danger-bg: rgba(248, 113, 113, 0.12);
+    --success: #4ade80;
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
+
+/* --toast-clearance is the height of the toasts fixed over the page (set by
+   ToastProvider), so content and focused elements can scroll clear of them. */
+html {
+  scroll-padding-bottom: var(--toast-clearance, 0px);
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 900px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  padding: 0 16px calc(48px + var(--toast-clearance, 0px));
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 40px;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 118%;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
