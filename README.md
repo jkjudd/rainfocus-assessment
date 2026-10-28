@@ -14,4 +14,4 @@ npm run dev
 
 `npm test` runs the unit tests and `npm run lint` runs ESLint.
 
-It needs Node 20.19+ or 22.12+. To run it on CodeSandbox, import the repo as a Devbox (not a browser sandbox): `.codesandbox/tasks.json` installs dependencies and starts the dev server with its preview on port 5173. (Port 2222 is the VM's SSH server, not the app.)
+It needs Node 20.19+ or 22.12+. To run it on CodeSandbox, import the repo from GitHub as a Devbox (not a browser sandbox, and without a local `node_modules`). `.devcontainer/devcontainer.json` provides Node 22, and `.codesandbox/tasks.json` does a clean `npm ci` and starts the dev server with its preview on port 5173. (Port 2222 is the VM's SSH server, not the app.)
