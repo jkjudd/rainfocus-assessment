@@ -8,10 +8,10 @@
   "tasks": {
     "dev": {
       "name": "dev",
-      "command": "npm run dev -- --host",
+      "command": "npm run dev -- --host --port 2222 --strictPort",
       "runAtStart": true,
       "preview": {
-        "port": 5173
+        "port": 2222
       }
     },
     "test": {
